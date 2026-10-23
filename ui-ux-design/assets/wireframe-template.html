@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product Wireframes</title>
+<!--
+  Grayscale wireframe template (ui-ux-design skill).
+  How to use:
+    1. Set PRODUCT, PLACES and TOOLS below.
+    2. Fill SITEMAP with every current route and the screen that covers it.
+    3. Add one entry per screen to SCREENS and list its key in GROUPS.
+       Each screen: label, html() returning markup, notes[] — one note per numbered marker n(k).
+    4. Use real content where the product has it; ph() placeholders everywhere else. Never invent data.
+    5. Check: node scripts/check_wireframes.js this-file.html
+    6. Serve the folder (python -m http.server) and open it; use Desktop/Mobile/Notes in the top bar.
+-->
+<style>
+  :root { --bg:#fff; --ink:#111; --ink-2:#555; --ink-3:#6b6b6b; --line:#e3e3e3; --fill:#f3f3f3; --fill-2:#e9e9e9; --r:8px; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#d9d9d9; font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); }
+  a { color:inherit; text-decoration:none; }
+  .proto-bar { position:sticky; top:0; z-index:50; display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:8px 16px; background:#222; color:#ddd; font-size:12px; }
+  .proto-bar strong { color:#fff; margin-right:8px; }
+  .proto-bar select, .proto-bar button { background:#333; color:#eee; border:1px solid #555; border-radius:6px; padding:4px 8px; font-size:12px; cursor:pointer; }
+  .proto-bar button[aria-pressed="true"] { background:#eee; color:#111; }
+  .stage { padding:24px 16px 64px; display:flex; justify-content:center; }
+  .device { background:var(--bg); width:100%; max-width:1280px; min-height:760px; border-radius:6px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.12); display:flex; flex-direction:column; }
+  .device.mobile { max-width:390px; }
+  .top { height:56px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; padding:0 16px; }
+  .brand { display:flex; align-items:center; gap:8px; font-weight:700; }
+  .mark { width:22px; height:22px; border-radius:50%; border:2.5px solid var(--ink); }
+  .search { flex:1; max-width:420px; margin:0 auto; height:36px; border-radius:999px; background:var(--fill); display:flex; align-items:center; padding:0 14px; color:var(--ink-3); white-space:nowrap; overflow:hidden; }
+  .icon-btn { width:36px; height:36px; border-radius:999px; display:grid; place-items:center; color:var(--ink-2); }
+  .ico { width:18px; height:18px; border:1.8px solid currentColor; border-radius:5px; }
+  .avatar { width:32px; height:32px; border-radius:50%; background:var(--fill-2); display:grid; place-items:center; font-size:12px; font-weight:600; color:var(--ink-2); flex:none; }
+  .btn { height:34px; padding:0 14px; border-radius:999px; border:1px solid var(--line); background:var(--bg); font-weight:600; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; font-size:13px; }
+  .btn.primary { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .body { flex:1; display:flex; }
+  .side { width:240px; flex:none; border-right:1px solid var(--line); padding:16px 12px; display:flex; flex-direction:column; gap:2px; }
+  .side h6 { margin:16px 12px 4px; font-size:12px; font-weight:600; color:var(--ink-3); }
+  .nav-item { display:flex; align-items:center; gap:12px; height:40px; padding:0 12px; border-radius:var(--r); color:var(--ink-2); font-weight:500; }
+  .nav-item.on { color:var(--ink); font-weight:700; background:var(--fill); }
+  .main { flex:1; min-width:0; display:flex; justify-content:center; }
+  .col { width:100%; max-width:680px; padding-bottom:48px; }
+  .rail { width:300px; flex:none; padding:24px 20px; border-left:1px solid var(--line); display:flex; flex-direction:column; gap:16px; }
+  .page-head { padding:24px 20px 16px; } .page-head h1 { margin:0; font-size:24px; } .page-head p { margin:6px 0 0; color:var(--ink-2); }
+  .tabs { display:flex; gap:4px; border-bottom:1px solid var(--line); padding:0 12px; overflow-x:auto; }
+  .tab { padding:12px 10px; color:var(--ink-2); border-bottom:2px solid transparent; white-space:nowrap; } .tab.on { color:var(--ink); font-weight:700; border-bottom-color:var(--ink); }
+  .row { display:block; padding:16px 20px; border-bottom:1px solid var(--line); }
+  .card { border:1px solid var(--line); border-radius:12px; padding:16px; } .card h4 { margin:0 0 8px; }
+  .meta { color:var(--ink-3); font-size:13px; }
+  .ph { display:block; height:10px; border-radius:4px; background:var(--fill-2); margin:6px 0; } .ph.t { height:14px; width:70%; background:#d6d6d6; } .ph.s { width:45%; }
+  .form { display:flex; flex-direction:column; gap:16px; padding:20px; }
+  .field label { display:block; font-weight:600; font-size:13px; margin-bottom:6px; }
+  .field .input { height:40px; border:1px solid var(--line); border-radius:8px; padding:0 12px; display:flex; align-items:center; color:var(--ink-3); }
+  .empty { text-align:center; padding:56px 24px; color:var(--ink-2); } .empty h2 { color:var(--ink); margin:0 0 6px; font-size:18px; }
+  .table { width:100%; border-collapse:collapse; font-size:13px; } .table th, .table td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); }
+  .bottom, .fab { display:none; }
+  .n { display:none; }
+  body.notes .n { display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 5px; border-radius:999px; background:#e0b400; color:#111; font:700 11px/1 system-ui; margin-left:6px; vertical-align:middle; }
+  .notes-panel { display:none; } body.notes .notes-panel { display:block; max-width:1280px; margin:0 auto; padding:0 16px 48px; }
+  .notes-panel ol { background:#fff7d6; border:1px solid #e6cf6a; border-radius:8px; padding:16px 16px 16px 40px; margin:0; font-size:13px; }
+  .device.mobile .side, .device.mobile .rail, .device.mobile .search, .device.mobile .desk { display:none; }
+  .device.mobile .bottom { display:flex; border-top:1px solid var(--line); height:60px; }
+  .bottom a { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; font-size:11px; color:var(--ink-3); } .bottom a.on { color:var(--ink); font-weight:700; }
+  .device.mobile .fab { display:grid; place-items:center; position:sticky; bottom:72px; margin:-56px 16px 16px auto; width:52px; height:52px; border-radius:50%; background:var(--ink); color:#fff; font-size:26px; }
+  .mob { display:none; } .device.mobile .mob { display:inline-grid; }
+</style>
+</head>
+<body class="notes">
+<div class="proto-bar">
+  <strong>Wireframe v1</strong>
+  <label>Screen <select id="screen"></select></label>
+  <button id="desk" aria-pressed="true">Desktop</button><button id="mob" aria-pressed="false">Mobile</button><button id="notes" aria-pressed="true">Notes</button>
+  <span style="flex:1"></span><span>Grayscale structure only · gray bars are placeholders · real content where it exists</span>
+</div>
+<div class="stage"><div class="device" id="device"></div></div>
+<div class="notes-panel" id="notesPanel"></div>
+<script>
+/* ---------- configure ---------- */
+const PRODUCT = "Product";
+// Places: the sidebar on desktop, the bottom bar on mobile. Keep it to the few destinations people choose between.
+const PLACES = [["home","Home"],["list","Section"],["empty","Other"]];
+// Which place each screen belongs to, for the highlighted nav item.
+const SECTION = { home:"home", list:"list", detail:"list", form:"list", empty:"empty" };
+
+/* ---------- helpers ---------- */
+const n = (k) => `<span class="n" title="See note ${k}">${k}</span>`;
+const ph = (cls="") => `<span class="ph ${cls}"></span>`;
+const field = (label, hint="") => `<div class="field"><label>${label}</label><div class="input"></div>${hint?`<div class="meta">${hint}</div>`:""}</div>`;
+
+// Header holds tools (same on desktop and mobile); sidebar holds places, stable lists above lists that grow.
+function shell(active, inner, rail="") {
+  const nav = PLACES.map(([id,label]) => `<a class="nav-item ${SECTION[active]===id?"on":""}" href="#${id}"><span class="ico"></span>${label}</a>`).join("");
+  return `
+  <header class="top">
+    <a class="brand" href="#home"><span class="mark"></span>${PRODUCT}</a>
+    <a class="search" href="#home">Search</a>
+    <a class="icon-btn mob" href="#home" aria-label="Search"><span class="ico"></span></a>
+    <a class="btn primary desk" href="#form">+ Create</a>
+    <a class="icon-btn" href="#home" aria-label="Notifications"><span class="ico"></span></a>
+    <a class="avatar" href="#home" title="Profile menu">Me</a>
+  </header>
+  <div class="body">
+    <nav class="side">${nav}<h6>Your items</h6>${ph()}${ph("s")}</nav>
+    <main class="main">${inner}</main>
+    ${rail ? `<aside class="rail">${rail}</aside>` : ""}
+  </div>
+  <a class="fab" href="#form" aria-label="Create">+</a>
+  <nav class="bottom">${PLACES.map(([id,label]) => `<a href="#${id}" class="${SECTION[active]===id?"on":""}"><span class="ico"></span>${label}</a>`).join("")}</nav>`;
+}
+
+/* ---------- sitemap: every current route and where it lives ---------- */
+const SITEMAP = [
+  ["/", "Home", "Home"],
+  ["/section", "Section — list", "Section"],
+  ["/section/[id]", "Section — detail", "Section"],
+];
+
+/* ---------- screens ---------- */
+const SCREENS = {
+  sitemap: {
+    label: "Sitemap — every route",
+    html: () => `<div class="col" style="max-width:1100px;padding:0 20px"><div class="page-head"><h1>Sitemap ${n(1)}</h1></div>
+      <table class="table"><thead><tr><th>Current route</th><th>Screen</th><th>New place</th></tr></thead>
+      <tbody>${SITEMAP.map(([r,s,w])=>`<tr><td><code>${r}</code></td><td>${s}</td><td>${w}</td></tr>`).join("")}</tbody></table></div>`,
+    notes: ["Every user-reachable route appears here, including query-string views, overlays and staff screens."],
+  },
+  home: {
+    label: "Home",
+    html: () => shell("home", `<div class="col"><div class="page-head"><h1>Home ${n(1)}</h1><p>One clear purpose for this screen.</p></div>${[1,2,3].map(()=>`<a class="row" href="#detail">${ph("t")}${ph()}${ph("s")}</a>`).join("")}</div>`,
+      `<div class="card"><h4>Rail</h4>${ph()}${ph("s")}</div>`),
+    notes: ["State the problem this fixes (P#) and the principle (source)."],
+  },
+  list: {
+    label: "Section — list",
+    html: () => shell("list", `<div class="col"><div class="page-head"><h1>Section</h1></div><div class="tabs"><a class="tab on">All</a><a class="tab">Filter</a></div>${[1,2,3].map(()=>`<a class="row" href="#detail">${ph("t")}${ph("s")}</a>`).join("")}</div>`),
+    notes: [],
+  },
+  detail: {
+    label: "Section — detail",
+    html: () => shell("detail", `<div class="col"><div class="page-head"><div class="meta"><a href="#list">Section</a> /</div><h1>${ph("t")}</h1></div><div class="row">${ph()}${ph()}${ph("s")}</div></div>`),
+    notes: [],
+  },
+  form: {
+    label: "Create — form",
+    html: () => shell("form", `<div class="col"><div class="page-head"><h1>Create</h1></div><div class="form">${field("Title")}${field("Body","Drafts save automatically")}<div><a class="btn">Cancel</a> <a class="btn primary">Save</a></div></div></div>`),
+    notes: [],
+  },
+  empty: {
+    label: "Empty state",
+    html: () => shell("empty", `<div class="col"><div class="empty"><h2>Nothing here yet</h2><p>Say why it is empty and that nothing is broken.</p><a class="btn primary" href="#form">One next action</a></div></div>`),
+    notes: [],
+  },
+};
+const GROUPS = { "Overview":["sitemap"], "Main":["home","list","detail","form"], "States":["empty"] };
+
+/* ---------- runtime ---------- */
+const sel = document.getElementById("screen"), device = document.getElementById("device"), panel = document.getElementById("notesPanel");
+sel.innerHTML = Object.entries(GROUPS).map(([g,keys]) => `<optgroup label="${g}">${keys.map(k=>`<option value="${k}">${SCREENS[k].label}</option>`).join("")}</optgroup>`).join("");
+function render() {
+  const key = SCREENS[location.hash.slice(1)] ? location.hash.slice(1) : "sitemap";
+  const s = SCREENS[key]; sel.value = key; device.innerHTML = s.html();
+  panel.innerHTML = s.notes.length ? `<ol>${s.notes.map(t=>`<li>${t}</li>`).join("")}</ol>` : "";
+  window.scrollTo(0,0);
+}
+const setMode = (m) => { device.classList.toggle("mobile", m); document.getElementById("mob").setAttribute("aria-pressed", m); document.getElementById("desk").setAttribute("aria-pressed", !m); };
+sel.onchange = () => { location.hash = sel.value; };
+document.getElementById("desk").onclick = () => setMode(false);
+document.getElementById("mob").onclick = () => setMode(true);
+document.getElementById("notes").onclick = (e) => e.currentTarget.setAttribute("aria-pressed", document.body.classList.toggle("notes"));
+window.addEventListener("hashchange", render);
+setMode(window.innerWidth < 900);
+render();
+</script>
+</body>
+</html>
